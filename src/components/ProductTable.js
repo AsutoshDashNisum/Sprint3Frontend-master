@@ -1,11 +1,35 @@
 import React from 'react';
 
-export default function ProductTable({ products, onSelect }) {
+export default function ProductTable({ products, selectedProducts = [], onSelect }) {
+  const isSelected = (sku) => selectedProducts.some((p) => p.sku === sku);
+
+  const handleSelectAll = (e) => {
+    if (typeof onSelect === 'function') {
+      products.forEach((product) => {
+        const selected = isSelected(product.sku);
+        const shouldSelect = e.target.checked;
+
+        if (shouldSelect && !selected) onSelect(product);
+        if (!shouldSelect && selected) onSelect(product);
+      });
+    }
+  };
+
   return (
     <table>
       <thead>
         <tr>
-          <th>Select</th>
+          <th>
+            <input
+              type="checkbox"
+              onChange={handleSelectAll}
+              checked={products.length > 0 && products.every((p) => isSelected(p.sku))}
+              indeterminate={
+                products.some((p) => isSelected(p.sku)) &&
+                !products.every((p) => isSelected(p.sku))
+              }
+            />
+          </th>
           <th>Category</th>
           <th>Product</th>
           <th>SKU</th>
@@ -16,18 +40,13 @@ export default function ProductTable({ products, onSelect }) {
         </tr>
       </thead>
       <tbody>
-        {products.map(p => (
+        {products.map((p) => (
           <tr key={p.productID}>
             <td>
               <input
                 type="checkbox"
-                onChange={() => {
-                  if (typeof onSelect === 'function') {
-                    onSelect(p);
-                  } else {
-                    console.warn("onSelect is not a function");
-                  }
-                }}
+                checked={isSelected(p.sku)}
+                onChange={() => onSelect?.(p)}
               />
             </td>
             <td>{p.categoryName}</td>

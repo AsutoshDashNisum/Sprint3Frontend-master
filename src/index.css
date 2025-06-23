@@ -81,10 +81,11 @@ table {
   width: 100%;
   border-collapse: collapse;
   background: white;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-table th, table td {
+table th,
+table td {
   padding: 12px;
   border: 1px solid #ddd;
   text-align: center;
