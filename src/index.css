@@ -1,0 +1,98 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+.app-layout {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  background-color: #1f2f3e;
+  color: white;
+  padding: 20px;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar .logo {
+  width: 80px;
+  margin-bottom: 20px;
+}
+
+.sidebar h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.sidebar nav a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin: 10px 0;
+  padding: 8px 16px;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  background-color: #1abc9c;
+  border-radius: 5px;
+}
+
+.main-content {
+  flex: 1;
+  background: #ecf0f3;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.dashboard h1 {
+  text-align: center;
+}
+
+.actions {
+  margin: 20px 0;
+}
+
+.actions button {
+  margin-right: 10px;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.actions .add {
+  background-color: #27ae60;
+  color: white;
+}
+
+.actions button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+table th, table td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  background: #1f2f3e;
+  color: white;
+}

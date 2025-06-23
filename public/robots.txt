@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Disallow:
+
+
+git add . 
+git commit -m "changing something in promotoion file "
+git push origin master
+C:\Users\disingh\Downloads\Sprint3MiniProject-master\Sprint3MiniProject-master\frontend\catalog-management-frontend
