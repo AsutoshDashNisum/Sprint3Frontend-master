@@ -2,6 +2,7 @@ body {
   margin: 0;
   font-family: Arial, sans-serif;
   overflow: hidden;
+  background-color: black;
 }
 
 .app-layout {
@@ -84,12 +85,18 @@ table {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+table tr th {
+  background-color: #b0b0b0; /* medium grey */
+  color: #fff;               /* white text for contrast */
+}
+
 table th,
 table td {
   padding: 12px;
   border: 1px solid #ddd;
   text-align: center;
 }
+
 
 footer {
   text-align: center;
