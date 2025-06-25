@@ -15,9 +15,9 @@ import { styled } from "@mui/material/styles";
 
 // Colors
 const primaryColor = "#1e88e5";
-const secondaryColor = "#00bfa5";
-const accentColor = "#ffd54f";
 const headerTextColor = "#000000";
+const ascColor = "#4caf50"; // green
+const descColor = "#f44336"; // red
 
 // Glassmorphic Container
 const GlassTableContainer = styled(TableContainer)(({ theme }) => ({
@@ -27,7 +27,7 @@ const GlassTableContainer = styled(TableContainer)(({ theme }) => ({
   backdropFilter: "blur(10px)",
   border: "1.5px solid rgba(200,200,200,0.18)",
   marginBottom: theme.spacing(2),
-  overflow: "hidden", // no scroll
+  overflow: "hidden",
 }));
 
 const HighlightRow = styled(TableRow)(({ selected }) => ({
@@ -112,36 +112,38 @@ export default function ProductTable({
                 }}
               />
             </TableCell>
-            {columns.map((col) => (
-              <StyledTableCell
-                key={col.id}
-                align="left"
-                sx={{
-                  color: headerTextColor,
-                  fontWeight: 700,
-                  letterSpacing: 0.5,
-                  cursor: "pointer",
-                  userSelect: "none",
-                  fontSize: 16,
-                  transition: "color 0.15s",
-                  "&:hover": {
-                    color: primaryColor,
-                  },
-                }}
-                onClick={() => onSort(col.id)}
-              >
-                <Tooltip title={`Sort by ${col.label}`} arrow>
-                  <Typography
-                    variant="h6"
-                    component="span"
-                    fontWeight="bold"
-                    color={headerTextColor}
-                  >
-                    {col.label}
-                  </Typography>
-                </Tooltip>
-              </StyledTableCell>
-            ))}
+            {columns.map((col) => {
+              const isActiveSort = sortField === col.id;
+              const activeColor =
+                sortOrder === "asc" ? ascColor : descColor;
+
+              return (
+                <StyledTableCell
+                  key={col.id}
+                  align="left"
+                  onClick={() => onSort(col.id)}
+                  sx={{
+                    cursor: "pointer",
+                    userSelect: "none",
+                    transition: "color 0.2s",
+                  }}
+                >
+                  <Tooltip title={`Sort by ${col.label}`} arrow>
+                    <Typography
+                      variant="h6"
+                      component="span"
+                      fontWeight="bold"
+                      sx={{
+                        color: isActiveSort ? activeColor : headerTextColor,
+                        letterSpacing: 0.5,
+                      }}
+                    >
+                      {col.label}
+                    </Typography>
+                  </Tooltip>
+                </StyledTableCell>
+              );
+            })}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -155,11 +157,7 @@ export default function ProductTable({
                   checked={isSelected(product.sku)}
                   onChange={() => onSelect(product)}
                   color="default"
-                  sx={{
-                    "&.Mui-checked": {
-                      color: primaryColor,
-                    },
-                  }}
+                  sx={{ "&.Mui-checked": { color: primaryColor } }}
                 />
               </StyledTableCell>
               <StyledTableCell>{product.sku}</StyledTableCell>

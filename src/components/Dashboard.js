@@ -91,6 +91,7 @@ export default function Dashboard() {
   useEffect(() => {
     loadProducts();
   }, []);
+
   useEffect(() => {
     setCurrentPage(1);
   }, [searchQuery, filterCategory, products.length]);
@@ -168,6 +169,41 @@ export default function Dashboard() {
       .catch(() => {
         setShowDeleteAnimation(false);
         setSnackBarMessage("Failed to delete product(s)");
+        setSnackBarOpen(true);
+      });
+  };
+
+  const handleSaveProduct = (data) => {
+    const product = {
+      name: data.name,
+      sku: data.sku,
+      categoryName: data.category,
+      size: data.size,
+      price: parseFloat(data.price),
+      discount: parseInt(data.discount),
+      discountPrice: parseFloat(data.price) * (1 - parseInt(data.discount) / 100),
+    };
+
+    const url = editMode
+      ? `http://localhost:8080/api/products/sku/${selectedProducts[0].sku}`
+      : "http://localhost:8080/api/products";
+
+    fetch(url, {
+      method: editMode ? "PUT" : "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(product),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to save product");
+        return res.json();
+      })
+      .then(() => {
+        setShowModal(false);
+        loadProducts();
+        setSelectedProducts([]);
+      })
+      .catch((err) => {
+        setSnackBarMessage(err.message || "Error saving product");
         setSnackBarOpen(true);
       });
   };
@@ -357,38 +393,7 @@ export default function Dashboard() {
             onClose={() => setShowModal(false)}
             product={editMode ? selectedProducts[0] : null}
             origin={modalOrigin}
-            onSave={(data) => {
-              const product = {
-                name: data.name,
-                sku: data.sku,
-                categoryName: data.category,
-                size: data.size,
-                price: parseFloat(data.price),
-                discount: parseInt(data.discount),
-                discountPrice: parseFloat(data.price) * (1 - parseInt(data.discount) / 100),
-              };
-              const url = editMode
-                ? `http://localhost:8080/api/products/sku/${selectedProducts[0].sku}`
-                : "http://localhost:8080/api/products";
-              fetch(url, {
-                method: editMode ? "PUT" : "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(product),
-              })
-                .then((res) => {
-                  if (!res.ok) throw new Error("Failed to save product");
-                  return res.json();
-                })
-                .then(() => {
-                  setShowModal(false);
-                  loadProducts();
-                  setSelectedProducts([]);
-                })
-                .catch((err) => {
-                  setSnackBarMessage(err.message || "Error saving product");
-                  setSnackBarOpen(true);
-                });
-            }}
+            onSave={handleSaveProduct}
           />
         </StyledPaper>
 

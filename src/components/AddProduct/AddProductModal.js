@@ -1,3 +1,4 @@
+// src/components/AddProduct/AddProductModal.jsx
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -12,26 +13,27 @@ const AddProductModal = ({ isOpen, onClose, onSave, product }) => {
     discount: '',
   });
 
+  // ✅ Fix: Reset form when modal opens or product changes
   useEffect(() => {
-    if (product) {
-      setFormData(product);
-    } else {
-      setFormData({
-        name: '',
-        sku: '',
-        category: '',
-        size: '',
-        price: '',
-        discount: '',
-      });
+    if (isOpen) {
+      if (product) {
+        setFormData(product);
+      } else {
+        setFormData({
+          name: '',
+          sku: '',
+          category: '',
+          size: '',
+          price: '',
+          discount: '',
+        });
+      }
     }
-  }, [product]);
+  }, [product, isOpen]);
 
   useEffect(() => {
     document.body.style.overflow = isOpen ? 'hidden' : 'auto';
-    return () => {
-      document.body.style.overflow = 'auto';
-    };
+    return () => { document.body.style.overflow = 'auto'; };
   }, [isOpen]);
 
   const handleChange = (e) => {
@@ -45,14 +47,11 @@ const AddProductModal = ({ isOpen, onClose, onSave, product }) => {
 
   const getSizeOptions = () => {
     switch (formData.category) {
-      case 'Footwear':
-        return ['6', '7', '8', '9', '10'];
+      case 'Footwear': return ['6', '7', '8', '9', '10'];
       case 'Men':
       case 'Women':
-      case 'Kids':
-        return ['S', 'M', 'L', 'XL'];
-      default:
-        return [];
+      case 'Kids': return ['S', 'M', 'L', 'XL'];
+      default: return [];
     }
   };
 
@@ -104,9 +103,7 @@ const AddProductModal = ({ isOpen, onClose, onSave, product }) => {
                 <select name="size" value={formData.size} onChange={handleChange} required>
                   <option value="">Select Size</option>
                   {getSizeOptions().map((size) => (
-                    <option key={size} value={size}>
-                      {size}
-                    </option>
+                    <option key={size} value={size}>{size}</option>
                   ))}
                 </select>
               </InputWrapper>
@@ -172,8 +169,7 @@ const InputWrapper = styled.div`
     font-weight: 600;
   }
 
-  input,
-  select {
+  input, select {
     padding: 0.6rem;
     border: 1px solid #ccc;
     border-radius: 8px;
@@ -199,3 +195,4 @@ const SaveButton = styled.button`
     background: #1e7e34;
   }
 `;
+
